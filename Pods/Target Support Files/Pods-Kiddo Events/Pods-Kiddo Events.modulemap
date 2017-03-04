@@ -1,0 +1,6 @@
+framework module Pods_Kiddo_Events {
+  umbrella header "Pods-Kiddo Events-umbrella.h"
+
+  export *
+  module * { export * }
+}
