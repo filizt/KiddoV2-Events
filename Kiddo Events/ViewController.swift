@@ -33,19 +33,19 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     @IBOutlet weak var eventAges: NSTextField!
     @IBOutlet weak var eventURL: NSTextField!
     @IBOutlet weak var locationAddress: NSTextField!
+    @IBOutlet weak var eventPriceField: NSTextField!
+    @IBOutlet weak var eventEndTimePicker: NSDatePicker!
+    @IBOutlet weak var eventStartTimePicker: NSDatePicker!
 
     var dates = [Date]() {
         didSet {
             dateListTable.reloadData()
         }
     }
-    @IBOutlet weak var eventPriceField: NSTextField!
-    @IBOutlet weak var eventEndTimePicker: NSDatePicker!
-    @IBOutlet weak var eventStartTimePicker: NSDatePicker!
 
     var dateFormatter = DateFormatter()
 
-    private var testData = [String: [String: Any]]()
+
 
     override var representedObject: Any? {
         didSet {
@@ -54,10 +54,12 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     }
 
     var textFields = [NSTextField]()
-
+    private var testData = [String: [String: Any]]()
+    private var imageTestData = [String: [String: Any]]()
     var data = [String: Any]()
+    
     //To-Do: Make this an Enum later
-    let eventCategories = ["Pick One", "Arts/Crafts/Music/Swim","Indoor Play", "Outdoor Play","Mommy and Me","Museums","Nature/Science","Out and About","Outdoor Activity","Parent's Date Night","Shows/Concerts/Theatre","Festival and Fairs","CoffeeShop","Brewery","Others",]
+    let eventCategories = ["Pick One", "Story Time","Arts/Crafts/Music/Swim","Indoor Play", "Outdoor Play","Mommy and Me","Museums","Nature/Science","Out and About","Outdoor Activity","Parent's Date Night","Shows/Concerts/Theatre","Festival and Fairs","CoffeeShop","Brewery","Others",]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,9 +78,26 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         categoryList.removeAllItems()
         categoryList.addItems(withTitles: eventCategories)
 
+        //Can't save images!
+        //createImageTestData()
+        //uploadEventImagesFromLocalSource()
 
     }
 
+    //For now we can just delete a date and can't update it.
+    @IBAction func endEditingText(_ sender: NSTextField) {
+        let row = dateListTable.row(for: sender)
+        let column = dateListTable.column(for: sender)
+        print("Row: ", row)
+        if sender.stringValue.isEmpty {
+            if dates.count > row {
+                print("dates.count", dates.count)
+                dates.remove(at: row)
+            }
+        }
+        dateListTable.reloadData()
+
+    }
 
     @IBAction func eventCategoryPicked(_ sender: NSPopUpButton) {
         print("Pop-up category item chosen:", sender.indexOfSelectedItem)
@@ -97,6 +116,8 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         guard prepareData() else { return }
 
         saveToParse()
+
+        //need a function here to clear out the fields
 
     }
 
@@ -161,8 +182,8 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         data["endDate"] = Date()
         data["allDay"] = allDayCheckButton.state != 0 ? true : false
         self.dateFormatter.dateFormat = "h:mm a"
-        data["startTime"] = dateFormatter.string(from: eventStartTimePicker.dateValue)
-        data["endTime"] = dateFormatter.string(from: eventEndTimePicker.dateValue)
+        data["startTime"] = eventStartTimePicker.isEnabled ? dateFormatter.string(from: eventStartTimePicker.dateValue) : ""
+        data["endTime"] = eventEndTimePicker.isEnabled ? dateFormatter.string(from: eventEndTimePicker.dateValue) : ""
         data["free"] = freeEventCheckButton.state != 0 ? true : false
         data["price"] = eventPriceField.stringValue
         data["originalEventURL"] = eventURL.stringValue
@@ -263,6 +284,212 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         return validationResult
     }
 
+    private func createImageTestData() {
+        var imageData = [String: Any]()
+        imageData["category"] = "Aquarium"
+        imageData["imageName"] = "aquarium"
+        imageTestData["0"] = imageData
+
+        imageData = [String: Any]()
+        imageData["category"] = "Aquarium"
+        imageData["imageName"] = "aquarium2"
+        imageTestData["1"] = imageData
+
+        imageData = [String: Any]()
+        imageData["category"] = "Arts"
+        imageData["imageName"] = "artsGeneric"
+        imageTestData["2"] = imageData
+
+        imageData = [String: Any]()
+        imageData["category"] = "Brewery"
+        imageData["imageName"] = "beerTap"
+        imageTestData["3"] = imageData
+
+        imageData = [String: Any]()
+        imageData["category"] = "Shows"
+        imageData["imageName"] = "classicalTheatre"
+        imageTestData["4"] = imageData
+
+        imageData = [String: Any]()
+        imageData["category"] = "CoffeeShop"
+        imageData["imageName"] = "coffeeShop"
+        imageTestData["5"] = imageData
+
+        imageData = [String: Any]()
+        imageData["category"] = "Museums"
+        imageData["imageName"] = "EMPlicensed"
+        imageTestData["6"] = imageData
+
+        imageData = [String: Any]()
+        imageData["category"] = "fitnessForMom"
+        imageData["imageName"] = "fitnessForMom"
+        imageTestData["7"] = imageData
+
+        imageData = [String: Any]()
+        imageData["category"] = "girlColoring"
+        imageData["imageName"] = "girlColoring"
+        imageTestData["8"] = imageData
+
+        imageData = [String: Any]()
+        imageData["category"] = "grassNature"
+        imageData["imageName"] = "grassNature"
+        imageTestData["9"] = imageData
+
+
+        imageData = [String: Any]()
+        imageData["category"] = "Aquarium"
+        imageData["imageName"] = "Aquarium2"
+        imageTestData["9"] = imageData
+
+
+        imageData = [String: Any]()
+        imageData["category"] = "IndoorGym"
+        imageData["imageName"] = "IndoorGym"
+        imageTestData["10"] = imageData
+
+
+        imageData = [String: Any]()
+        imageData["category"] = "Arts"
+        imageData["imageName"] = "ClassicalMusic"
+        imageTestData["11"] = imageData
+
+        imageData = [String: Any]()
+        imageData["category"] = "kidsNature"
+        imageData["imageName"] = "kidsNature"
+        imageTestData["12"] = imageData
+
+
+        imageData = [String: Any]()
+        imageData["category"] = "kidSwimming"
+        imageData["imageName"] = "kidSwimming"
+        imageTestData["13"] = imageData
+
+
+        imageData = [String: Any]()
+        imageData["category"] = "libraryGeneric"
+        imageData["imageName"] = "libraryGeneric"
+        imageTestData["14"] = imageData
+
+
+        imageData = [String: Any]()
+        imageData["category"] = "Library"
+        imageData["imageName"] = "LibraryGeneric"
+        imageTestData["15"] = imageData
+
+
+        imageData = [String: Any]()
+        imageData["category"] = "MusicGeneric"
+        imageData["imageName"] = "MusicGeneric"
+        imageTestData["16"] = imageData
+
+        imageData = [String: Any]()
+        imageData["category"] = "outdoorPlayground"
+        imageData["imageName"] = "outdoorPlayground"
+        imageTestData["17"] = imageData
+
+        imageData = [String: Any]()
+        imageData["category"] = "outdoorSwing"
+        imageData["imageName"] = "outdoorSwing"
+        imageTestData["18"] = imageData
+
+        imageData = [String: Any]()
+        imageData["category"] = "museums"
+        imageData["imageName"] = "pacificScienceCenter"
+        imageTestData["19"] = imageData
+
+        imageData = [String: Any]()
+        imageData["category"] = "museums"
+        imageData["imageName"] = "pacificScienceCenter"
+        imageTestData["20"] = imageData
+        imageData = [String: Any]()
+
+        imageData["category"] = "Arts"
+        imageData["imageName"] = "paintbrushes"
+        imageTestData["21"] = imageData
+        imageData = [String: Any]()
+
+        imageData["category"] = "Arts"
+        imageData["imageName"] = "paintingKid"
+        imageTestData["22"] = imageData
+        imageData = [String: Any]()
+
+        imageData["category"] = "Zoo"
+        imageData["imageName"] = "pettingZoo"
+        imageTestData["23"] = imageData
+        imageData = [String: Any]()
+
+        imageData["category"] = "Zoo"
+        imageData["imageName"] = "puppetShow"
+        imageTestData["24"] = imageData
+        imageData = [String: Any]()
+
+        imageData["category"] = "Zoo"
+        imageData["imageName"] = "Swimming"
+        imageTestData["25"] = imageData
+        imageData = [String: Any]()
+
+        imageData["category"] = "Zoo"
+        imageData["imageName"] = "Zoo"
+        imageTestData["26"] = imageData
+        imageData = [String: Any]()
+
+        imageData["category"] = "Zoo"
+        imageData["imageName"] = "zooFlamingo"
+        imageTestData["27"] = imageData
+        imageData = [String: Any]()
+
+        imageData["category"] = "Zoo"
+        imageData["imageName"] = "zooPeacock"
+        imageTestData["28"] = imageData
+        imageData = [String: Any]()
+
+
+
+    }
+
+    private func uploadEventImagesFromLocalSource() {
+
+        print ("Start uploading")
+
+        for entry in self.imageTestData {
+            if let test = self.imageTestData[entry.key] {
+                let eventImage = PFObject(className: "EventImage")
+                eventImage["category"] = test["category"] as! String
+                eventImage["imageName"] = test["imageName"] as! String
+
+               // let asset = NSDataAsset(name: "Zoo.jpg")
+               // var pfFile = PFFile(data: (asset?.data)!)
+
+                let image = NSImage(named: eventImage["imageName"] as! String)
+                let name  = eventImage["imageName"] as! String
+                print("IMAGE NAMED:", name)
+//                print(image?.representations.first?.description)
+//                 let bits = image?.representations.first
+//                    if let data = bits.representation(using: .JPEG, properties: [:]){
+//                        var pfFile = PFFile(data: data)
+//
+//                }
+
+
+                if let cgImage = image?.cgImage(forProposedRect: nil, context: nil, hints: nil) {
+                    let bitmapRep = NSBitmapImageRep(cgImage: cgImage)
+                    if let jpegData = bitmapRep.representation(using: NSBitmapImageFileType.JPEG, properties: [:]) {
+                        let pfFile = PFFile(data: jpegData, contentType: "image/jpeg")
+                            eventImage["image"] = pfFile
+                            if let imagePFFile = try? pfFile.save() {
+                                //image saved. Now try save eventImage object
+                                guard let _ = try? eventImage.save() else { return }
+                                print("IMAGE SAVED***:", name)
+                            } else {
+                                print("IMAGE IS NOT SAVED!!!")
+                            }
+
+                    }
+                }
+            }
+        }
+    }
+    
 
     func numberOfRows(in tableView: NSTableView) -> Int {
         return self.dates.count
@@ -277,7 +504,5 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         }
         return nil
     }
-
-
 }
 
