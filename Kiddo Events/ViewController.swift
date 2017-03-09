@@ -152,6 +152,7 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         //event object has all the date it needs. Save it now. In the completion handler
         //we can check which dates it needs to have relation with.
         guard let _ = try? eventObject.save() else { return }
+        print("Event object saved")
 
         for date in alleventdates {
             //let date = alleventdates[0]
@@ -164,11 +165,13 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
                     let relation = dateObject.relation(forKey: "events")
                     relation.add(eventObject)
                     guard let _ = try? dateObject.save() else { return }
+                    print("Date object created and event object linked to the date object")
                 } else {
                     let existingDateObject = eventDateObjects[0]
                     let relation = existingDateObject.relation(forKey: "events")
                     relation.add(eventObject)
                     guard let _ = try? existingDateObject.save() else { return }
+                    print("Event object linked to existing date object")
                 }
             }
         }
@@ -216,14 +219,16 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     }
 
     @IBAction func freeEventPicked(_ sender: NSButton) {
-        switch sender.state {
-        case NSOnState:
-            eventPriceField.isEnabled = false
-        case NSOffState:
-            eventPriceField.isEnabled = true
-        default:
-            print("should not hit here")
-        }
+        //if let sender = freeEventCheckButton as! NSButton {
+            switch sender.state {
+            case NSOnState:
+                eventPriceField.isEnabled = false
+            case NSOffState:
+                eventPriceField.isEnabled = true
+            default:
+                print("should not hit here")
+            }
+        //}
     }
 
     private func validateFields() -> Bool {
