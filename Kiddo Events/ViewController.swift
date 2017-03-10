@@ -121,6 +121,14 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
 
     }
 
+
+    private func setImageCacheLimit() {
+        let cacheObject: PFObject = PFObject(className: "ImageCache")
+        cacheObject["limit"] = 50
+
+        guard let _ = try? cacheObject.save() else { return }
+    }
+
     private func saveToParse() {
 
         guard data.count > 0 else { return }
