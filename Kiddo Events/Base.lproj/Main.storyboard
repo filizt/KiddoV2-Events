@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -1119,11 +1120,54 @@
                         <outlet property="locationAddress" destination="cUY-eJ-5JY" id="hNj-ww-kG7"/>
                         <outlet property="locationHours" destination="6Rl-hg-5c2" id="HBs-RJ-LmH"/>
                         <outlet property="popularEventCheckButton" destination="2Zw-sk-dRx" id="aw3-hC-JD8"/>
+                        <segue destination="vs5-T3-kCE" kind="modal" identifier="alertView" id="Q1E-rY-5rp"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="63" y="906"/>
+            <point key="canvasLocation" x="142" y="1053"/>
+        </scene>
+        <!--Alert-->
+        <scene sceneID="EWb-0Q-uCf">
+            <objects>
+                <viewController title="Alert" id="vs5-T3-kCE" customClass="AlertViewController" customModule="Kiddo_Events" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="q6m-rM-X7e">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="i1E-1w-IF9">
+                                <rect key="frame" x="196" y="133" width="59" height="32"/>
+                                <buttonCell key="cell" type="push" title="OK" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="WWr-ux-0gN">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="OKButton:" target="vs5-T3-kCE" id="8es-Fu-vLl"/>
+                                </connections>
+                            </button>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qAz-i2-6jw">
+                                <rect key="frame" x="94" y="198" width="262" height="24"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Finished uploading to Parse. " id="T16-h0-Xqy">
+                                    <font key="font" metaFont="system" size="20"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="i1E-1w-IF9" firstAttribute="centerY" secondItem="q6m-rM-X7e" secondAttribute="centerY" id="0NZ-eV-9e8"/>
+                            <constraint firstItem="qAz-i2-6jw" firstAttribute="centerY" secondItem="q6m-rM-X7e" secondAttribute="centerY" multiplier="0.6" id="1Yn-7i-qgK"/>
+                            <constraint firstItem="i1E-1w-IF9" firstAttribute="centerX" secondItem="q6m-rM-X7e" secondAttribute="centerX" id="4f4-LZ-6TG"/>
+                            <constraint firstItem="qAz-i2-6jw" firstAttribute="centerX" secondItem="q6m-rM-X7e" secondAttribute="centerX" id="Lkp-Xm-7nm"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <customObject id="cF1-yz-VXL" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="643" y="788"/>
         </scene>
     </scenes>
     <resources>

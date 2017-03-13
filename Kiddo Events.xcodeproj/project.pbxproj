@@ -8,22 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		0AD8CE643C0A1C4BB200C454 /* Pods_Kiddo_Events.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA3358893A8BDADAC8D93D7D /* Pods_Kiddo_Events.framework */; };
+		BDB8CEB51E7731C900D44D31 /* AlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB8CEB41E7731C900D44D31 /* AlertViewController.swift */; };
 		BDCAAE891E67D33300AF21D7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCAAE881E67D33300AF21D7 /* AppDelegate.swift */; };
 		BDCAAE8B1E67D33300AF21D7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDCAAE8A1E67D33300AF21D7 /* ViewController.swift */; };
 		BDCAAE901E67D33300AF21D7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDCAAE8E1E67D33300AF21D7 /* Main.storyboard */; };
-		BDCAAE9E1E6F4FB500AF21D7 /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = BDCAAE9D1E6F4FB500AF21D7 /* Assets */; };
 		BDCAAEA01E6F4FC100AF21D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BDCAAE9F1E6F4FC100AF21D7 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		688F2E266F9A9DAA022B811A /* Pods-Kiddo Events.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiddo Events.release.xcconfig"; path = "Pods/Target Support Files/Pods-Kiddo Events/Pods-Kiddo Events.release.xcconfig"; sourceTree = "<group>"; };
 		941DD674720E910CC7701E81 /* Pods-Kiddo Events.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Kiddo Events.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Kiddo Events/Pods-Kiddo Events.debug.xcconfig"; sourceTree = "<group>"; };
+		BDB8CEB41E7731C900D44D31 /* AlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertViewController.swift; sourceTree = "<group>"; };
 		BDCAAE851E67D33300AF21D7 /* Kiddo Events.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kiddo Events.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDCAAE881E67D33300AF21D7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BDCAAE8A1E67D33300AF21D7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		BDCAAE8F1E67D33300AF21D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BDCAAE911E67D33300AF21D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BDCAAE9D1E6F4FB500AF21D7 /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = "<group>"; };
 		BDCAAE9F1E6F4FC100AF21D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EA3358893A8BDADAC8D93D7D /* Pods_Kiddo_Events.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Kiddo_Events.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -71,11 +71,11 @@
 			isa = PBXGroup;
 			children = (
 				BDCAAE9F1E6F4FC100AF21D7 /* Assets.xcassets */,
-				BDCAAE9D1E6F4FB500AF21D7 /* Assets */,
 				BDCAAE881E67D33300AF21D7 /* AppDelegate.swift */,
 				BDCAAE8A1E67D33300AF21D7 /* ViewController.swift */,
 				BDCAAE8E1E67D33300AF21D7 /* Main.storyboard */,
 				BDCAAE911E67D33300AF21D7 /* Info.plist */,
+				BDB8CEB41E7731C900D44D31 /* AlertViewController.swift */,
 			);
 			path = "Kiddo Events";
 			sourceTree = "<group>";
@@ -153,7 +153,6 @@
 			files = (
 				BDCAAE901E67D33300AF21D7 /* Main.storyboard in Resources */,
 				BDCAAEA01E6F4FC100AF21D7 /* Assets.xcassets in Resources */,
-				BDCAAE9E1E6F4FB500AF21D7 /* Assets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,6 +212,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BDCAAE8B1E67D33300AF21D7 /* ViewController.swift in Sources */,
+				BDB8CEB51E7731C900D44D31 /* AlertViewController.swift in Sources */,
 				BDCAAE891E67D33300AF21D7 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

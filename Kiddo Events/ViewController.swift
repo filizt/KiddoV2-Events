@@ -114,10 +114,10 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     @IBAction func doneButtonClicked(_ sender: Any) {
         guard validateFields() else { return }
         guard prepareData() else { return }
+        guard saveToParse() else { return }
 
-        saveToParse()
-
-        //need a function here to clear out the fields
+        //if everything above is true then show success pop-up
+        performSegue(withIdentifier: "alertView", sender: nil)
 
     }
 
@@ -129,9 +129,9 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         guard let _ = try? cacheObject.save() else { return }
     }
 
-    private func saveToParse() {
+    private func saveToParse() -> Bool {
 
-        guard data.count > 0 else { return }
+        guard data.count > 0 else { return false }
 
         let eventObject: PFObject = PFObject(className: "EventObject")
         eventObject["title"] = data["title"]
@@ -159,7 +159,7 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
 
         //event object has all the date it needs. Save it now. In the completion handler
         //we can check which dates it needs to have relation with.
-        guard let _ = try? eventObject.save() else { return }
+        guard let _ = try? eventObject.save() else { return false }
         print("Event object saved")
 
         for date in alleventdates {
@@ -172,17 +172,19 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
                     dateObject["eventDate"] = date
                     let relation = dateObject.relation(forKey: "events")
                     relation.add(eventObject)
-                    guard let _ = try? dateObject.save() else { return }
+                    guard let _ = try? dateObject.save() else { return false }
                     print("Date object created and event object linked to the date object")
                 } else {
                     let existingDateObject = eventDateObjects[0]
                     let relation = existingDateObject.relation(forKey: "events")
                     relation.add(eventObject)
-                    guard let _ = try? existingDateObject.save() else { return }
+                    guard let _ = try? existingDateObject.save() else { return false }
                     print("Event object linked to existing date object")
                 }
             }
         }
+
+        return true
     }
 
     private func prepareData() -> Bool {
