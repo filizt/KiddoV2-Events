@@ -326,6 +326,7 @@
 			baseConfigurationReference = 941DD674720E910CC7701E81 /* Pods-Kiddo Events.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = AWF997WQMM;
 				INFOPLIST_FILE = "Kiddo Events/Info.plist";
@@ -341,6 +342,7 @@
 			baseConfigurationReference = 688F2E266F9A9DAA022B811A /* Pods-Kiddo Events.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = AWF997WQMM;
 				INFOPLIST_FILE = "Kiddo Events/Info.plist";

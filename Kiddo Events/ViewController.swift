@@ -45,7 +45,7 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
 
     var dateFormatter = DateFormatter()
 
-
+    var imageFileUrl: URL?
 
     override var representedObject: Any? {
         didSet {
@@ -59,7 +59,7 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     var data = [String: Any]()
     
     //To-Do: Make this an Enum later
-    let eventCategories = ["Pick One", "Story Time","Arts/Crafts/Music/Swim","Indoor Play", "Outdoor Play","Mommy and Me","Museums","Nature/Science","Out and About","Outdoor Activity","Parent's Date Night","Shows/Concerts/Theatre","Festival and Fairs","CoffeeShop","Brewery","Others",]
+    let eventCategories = ["Pick One", "Story Time","Arts/Crafts/Music/Swim","Indoor Play", "Outdoor Play","Mommy and Me","Museums","Nature/Science","Out and About","Outdoor Activity","Parents Night Out","Shows/Concerts/Theatre/Movie","Festival and Fairs","CoffeeShop","Brewery", "Seasonal/Holidays","Others",]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,8 +79,7 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         categoryList.addItems(withTitles: eventCategories)
 
         //Can't save images!
-        //createImageTestData()
-        //uploadEventImagesFromLocalSource()
+    
 
     }
 
@@ -88,10 +87,10 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     @IBAction func endEditingText(_ sender: NSTextField) {
         let row = dateListTable.row(for: sender)
         let column = dateListTable.column(for: sender)
-        print("Row: ", row)
+       // print("Row: ", row)
         if sender.stringValue.isEmpty {
             if dates.count > row {
-                print("dates.count", dates.count)
+                //print("dates.count", dates.count)
                 dates.remove(at: row)
             }
         }
@@ -100,7 +99,7 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     }
 
     @IBAction func eventCategoryPicked(_ sender: NSPopUpButton) {
-        print("Pop-up category item chosen:", sender.indexOfSelectedItem)
+       // print("Pop-up category item chosen:", sender.indexOfSelectedItem)
     }
 
     func addDate(_ sender: Any) {
@@ -122,6 +121,7 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     }
 
 
+
     private func setImageCacheLimit() {
         let cacheObject: PFObject = PFObject(className: "ImageCache")
         cacheObject["limit"] = 50
@@ -132,6 +132,16 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     private func saveToParse() -> Bool {
 
         guard data.count > 0 else { return false }
+
+        //first save the image file
+        if let imageFileUrl = imageFileUrl{
+            if let imageData = try? Data(contentsOf: imageFileUrl) {
+                var fileName = imageFileUrl.deletingPathExtension().lastPathComponent
+                guard let imgObjId = uploadEventImage(data: imageData, imageName: fileName) else { print("CANT GET IMAGE OBJECT ID"); return }
+                eventImageObjectId.stringValue = imgObjId
+                //print("image URL: \(imageFileUrl.lastPathComponent)")
+            }
+        }
 
         let eventObject: PFObject = PFObject(className: "EventObject")
         eventObject["title"] = data["title"]
@@ -160,7 +170,7 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
         //event object has all the date it needs. Save it now. In the completion handler
         //we can check which dates it needs to have relation with.
         guard let _ = try? eventObject.save() else { return false }
-        print("Event object saved")
+        //print("Event object saved")
 
         for date in alleventdates {
             //let date = alleventdates[0]
@@ -173,13 +183,13 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
                     let relation = dateObject.relation(forKey: "events")
                     relation.add(eventObject)
                     guard let _ = try? dateObject.save() else { return false }
-                    print("Date object created and event object linked to the date object")
+                    //print("Date object created and event object linked to the date object")
                 } else {
                     let existingDateObject = eventDateObjects[0]
                     let relation = existingDateObject.relation(forKey: "events")
                     relation.add(eventObject)
                     guard let _ = try? existingDateObject.save() else { return false }
-                    print("Event object linked to existing date object")
+                    //print("Event object linked to existing date object")
                 }
             }
         }
@@ -296,215 +306,77 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
              validationResult = false
         }
 
+
+
         return validationResult
     }
 
-    private func createImageTestData() {
-        var imageData = [String: Any]()
-        imageData["category"] = "Aquarium"
-        imageData["imageName"] = "aquarium"
-        imageTestData["0"] = imageData
+    @IBAction func browseFiles(_ sender: Any) {
 
-        imageData = [String: Any]()
-        imageData["category"] = "Aquarium"
-        imageData["imageName"] = "aquarium2"
-        imageTestData["1"] = imageData
+        let dialog = NSOpenPanel();
 
-        imageData = [String: Any]()
-        imageData["category"] = "Arts"
-        imageData["imageName"] = "artsGeneric"
-        imageTestData["2"] = imageData
+        dialog.title                   = "Choose a .txt file";
+        dialog.showsResizeIndicator    = true;
+        dialog.showsHiddenFiles        = false;
+        dialog.canChooseDirectories    = false;
+        dialog.canCreateDirectories    = false;
+        dialog.allowsMultipleSelection = false;
+        dialog.allowedFileTypes        = ["jpeg"];
 
-        imageData = [String: Any]()
-        imageData["category"] = "Brewery"
-        imageData["imageName"] = "beerTap"
-        imageTestData["3"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "Shows"
-        imageData["imageName"] = "classicalTheatre"
-        imageTestData["4"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "CoffeeShop"
-        imageData["imageName"] = "coffeeShop"
-        imageTestData["5"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "Museums"
-        imageData["imageName"] = "EMPlicensed"
-        imageTestData["6"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "fitnessForMom"
-        imageData["imageName"] = "fitnessForMom"
-        imageTestData["7"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "girlColoring"
-        imageData["imageName"] = "girlColoring"
-        imageTestData["8"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "grassNature"
-        imageData["imageName"] = "grassNature"
-        imageTestData["9"] = imageData
-
-
-        imageData = [String: Any]()
-        imageData["category"] = "Aquarium"
-        imageData["imageName"] = "Aquarium2"
-        imageTestData["9"] = imageData
-
-
-        imageData = [String: Any]()
-        imageData["category"] = "IndoorGym"
-        imageData["imageName"] = "IndoorGym"
-        imageTestData["10"] = imageData
-
-
-        imageData = [String: Any]()
-        imageData["category"] = "Arts"
-        imageData["imageName"] = "ClassicalMusic"
-        imageTestData["11"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "kidsNature"
-        imageData["imageName"] = "kidsNature"
-        imageTestData["12"] = imageData
-
-
-        imageData = [String: Any]()
-        imageData["category"] = "kidSwimming"
-        imageData["imageName"] = "kidSwimming"
-        imageTestData["13"] = imageData
-
-
-        imageData = [String: Any]()
-        imageData["category"] = "libraryGeneric"
-        imageData["imageName"] = "libraryGeneric"
-        imageTestData["14"] = imageData
-
-
-        imageData = [String: Any]()
-        imageData["category"] = "Library"
-        imageData["imageName"] = "LibraryGeneric"
-        imageTestData["15"] = imageData
-
-
-        imageData = [String: Any]()
-        imageData["category"] = "MusicGeneric"
-        imageData["imageName"] = "MusicGeneric"
-        imageTestData["16"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "outdoorPlayground"
-        imageData["imageName"] = "outdoorPlayground"
-        imageTestData["17"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "outdoorSwing"
-        imageData["imageName"] = "outdoorSwing"
-        imageTestData["18"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "museums"
-        imageData["imageName"] = "pacificScienceCenter"
-        imageTestData["19"] = imageData
-
-        imageData = [String: Any]()
-        imageData["category"] = "museums"
-        imageData["imageName"] = "pacificScienceCenter"
-        imageTestData["20"] = imageData
-        imageData = [String: Any]()
-
-        imageData["category"] = "Arts"
-        imageData["imageName"] = "paintbrushes"
-        imageTestData["21"] = imageData
-        imageData = [String: Any]()
-
-        imageData["category"] = "Arts"
-        imageData["imageName"] = "paintingKid"
-        imageTestData["22"] = imageData
-        imageData = [String: Any]()
-
-        imageData["category"] = "Zoo"
-        imageData["imageName"] = "pettingZoo"
-        imageTestData["23"] = imageData
-        imageData = [String: Any]()
-
-        imageData["category"] = "Zoo"
-        imageData["imageName"] = "puppetShow"
-        imageTestData["24"] = imageData
-        imageData = [String: Any]()
-
-        imageData["category"] = "Zoo"
-        imageData["imageName"] = "Swimming"
-        imageTestData["25"] = imageData
-        imageData = [String: Any]()
-
-        imageData["category"] = "Zoo"
-        imageData["imageName"] = "Zoo"
-        imageTestData["26"] = imageData
-        imageData = [String: Any]()
-
-        imageData["category"] = "Zoo"
-        imageData["imageName"] = "zooFlamingo"
-        imageTestData["27"] = imageData
-        imageData = [String: Any]()
-
-        imageData["category"] = "Zoo"
-        imageData["imageName"] = "zooPeacock"
-        imageTestData["28"] = imageData
-        imageData = [String: Any]()
-
-
-
+        if (dialog.runModal() == NSModalResponseOK) {
+            if let result = dialog.url {
+                imageFileUrl = result
+                eventImageObjectId.stringValue = result.lastPathComponent
+            }
+        } else {
+            // User clicked on "Cancel"
+            return
+        }
+        
     }
 
-    private func uploadEventImagesFromLocalSource() {
-
-        print ("Start uploading")
-
-        for entry in self.imageTestData {
-            if let test = self.imageTestData[entry.key] {
-                let eventImage = PFObject(className: "EventImage")
-                eventImage["category"] = test["category"] as! String
-                eventImage["imageName"] = test["imageName"] as! String
-
-               // let asset = NSDataAsset(name: "Zoo.jpg")
-               // var pfFile = PFFile(data: (asset?.data)!)
-
-                let image = NSImage(named: eventImage["imageName"] as! String)
-                let name  = eventImage["imageName"] as! String
-                print("IMAGE NAMED:", name)
-//                print(image?.representations.first?.description)
-//                 let bits = image?.representations.first
-//                    if let data = bits.representation(using: .JPEG, properties: [:]){
-//                        var pfFile = PFFile(data: data)
-//
-//                }
 
 
-                if let cgImage = image?.cgImage(forProposedRect: nil, context: nil, hints: nil) {
-                    let bitmapRep = NSBitmapImageRep(cgImage: cgImage)
-                    if let jpegData = bitmapRep.representation(using: NSBitmapImageFileType.JPEG, properties: [:]) {
-                        let pfFile = PFFile(data: jpegData, contentType: "image/jpeg")
-                            eventImage["image"] = pfFile
-                            if let imagePFFile = try? pfFile.save() {
-                                //image saved. Now try save eventImage object
-                                guard let _ = try? eventImage.save() else { return }
-                                print("IMAGE SAVED***:", name)
-                            } else {
-                                print("IMAGE IS NOT SAVED!!!")
-                            }
+    @IBAction func uploadImages(_ sender: Any) {
 
-                    }
-                }
+        let url1 = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let url2 = url1.appendingPathComponent("/KiddoPhotos/ToBeUploaded")
+        let properties = [URLResourceKey.localizedNameKey,
+                          URLResourceKey.creationDateKey, URLResourceKey.localizedTypeDescriptionKey]
+
+        let fileList = try? FileManager.default.contentsOfDirectory(at: url2, includingPropertiesForKeys: properties, options: FileManager.DirectoryEnumerationOptions.skipsHiddenFiles)
+
+        guard (fileList != nil) else { return }
+
+        var count = 0
+
+        for url in fileList! {
+            if let imageData = try? Data(contentsOf: url) {
+                var fileName = url.deletingPathExtension().lastPathComponent
+                uploadEventImage(data: imageData, imageName: fileName)
+                //print("image URL: \(url.lastPathComponent)")
+                count = count + 1
             }
         }
+        //print("Total images uploaded: ", count)
+
     }
-    
+
+    private func uploadEventImage(data: Data, imageName: String) -> String? {
+
+        let eventImage = PFObject(className: "EventImage")
+        eventImage["category"] = imageName
+        eventImage["imageName"] = imageName
+
+        let imagePFFile = PFFile(data: data, contentType: "image/jpeg")
+        eventImage["image"] = imagePFFile
+        guard let _ = try? imagePFFile.save() else { print("PFFILE IS NOT SAVED!!! ", imageName); return }
+        guard let _ = try? eventImage.save() else { print("IMAGE IS NOT SAVED!!! ", imageName); return }
+
+        return eventImage.objectId
+
+    }
+
 
     func numberOfRows(in tableView: NSTableView) -> Int {
         return self.dates.count
@@ -513,7 +385,7 @@ class ViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSour
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         if let cell = dateListTable.make(withIdentifier: "dateCell", owner: nil) as? NSTableCellView {
             self.dateFormatter.dateFormat = "MM-dd-YYYY"
-            print(dates[row])
+            //print(dates[row])
             cell.textField?.stringValue =  self.dateFormatter.string(from: dates[row])
             return cell
         }

@@ -1016,6 +1016,17 @@
                                     <action selector="addDate:" target="XfG-lQ-9wD" id="Zik-bM-kGA"/>
                                 </connections>
                             </button>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5TH-fW-cbJ">
+                                <rect key="frame" x="319" y="41" width="81" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="sMc-59-Wrh">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="browseFiles:" target="XfG-lQ-9wD" id="mR0-mk-yeH"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstItem="tMi-dg-JgQ" firstAttribute="leading" secondItem="Hld-gJ-aoW" secondAttribute="trailing" constant="22" id="1G4-o7-p8O"/>
